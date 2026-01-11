@@ -1,0 +1,121 @@
+#
+# Copyright (C) 2026 The Android Open Source Project
+#
+
+# Specify device path
+DEVICE_PATH := device/samsung/a30
+
+# For building with minimal manifest
+ALLOW_MISSING_DEPENDENCIES := true
+
+# Architecture – arm64
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 :=
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := cortex-a53
+
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME := a30
+TARGET_NO_BOOTLOADER := true
+
+# Display
+TARGET_SCREEN_DENSITY := 480
+
+# Kernel
+TARGET_FORCE_PREBUILT_KERNEL := true
+ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
+TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilts/kernel
+BOARD_PREBUILT_DTBOIMAGE := $(LOCAL_PATH)/prebuilts/dtbo.img
+BOARD_INCLUDE_RECOVERY_DTBO := true
+TARGET_KERNEL_ARCH := arm64
+endif
+
+# Boot
+BOARD_BOOT_HEADER_VERSION := 1
+BOARD_KERNEL_BASE := 0x10000000
+BOARD_KERNEL_CMDLINE := androidboot.hardware=exynos7884B androidboot.selinux=permissive
+BOARD_KERNEL_IMAGE_NAME := kernel
+BOARD_KERNEL_PAGESIZE := 2048
+BOARD_KERNEL_OFFSET := 0x00008000
+BOARD_RAMDISK_OFFSET := 0x01000000
+BOARD_KERNEL_SECOND_OFFSET := 0x00f00000
+BOARD_KERNEL_TAGS_OFFSET := 0x00000100
+
+BOARD_MKBOOTIMG_ARGS += \
+        --tags_offset 0x00000100 \
+        --second_offset 0x00f00000 \
+        --kernel_offset 0x00008000 \
+        --ramdisk_offset 0x01000000 \
+        --header_version 1 \
+        --base 0x10000000 \
+        --os_version 15.0.0 \
+        --pagesize 2048
+
+# Recovery
+BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+
+# Fastbootd
+TW_INCLUDE_FASTBOOTD := false
+
+# Partitions
+BOARD_FLASH_BLOCK_SIZE := 131072
+BOARD_BOOTIMAGE_PARTITION_SIZE := 37748736
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 55574528
+BOARD_CACHEIMAGE_PARTITION_SIZE := 419430400
+
+# System as root
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+BOARD_ROOT_EXTRA_FOLDERS := cache carrier efs keydata omr
+BOARD_SUPPRESS_SECURE_ERASE := true
+
+# Workaround for error copying vendor files to recovery ramdisk
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Security patch level
+VENDOR_SECURITY_PATCH := 2021-08-01
+
+# Verified Boot
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+
+# Crypto ; Anti-Rollback hack
+PLATFORM_SECURITY_PATCH := 2127-12-31
+VENDOR_SECURITY_PATCH := 2127-12-31
+PLATFORM_VERSION :=  99.87.36
+TW_INCLUDE_CRYPTO := false
+TW_INCLUDE_CRYPTO_FBE := false
+
+# TWRP specific build flags
+TW_DEVICE_VERSION := equinoX-v4
+TW_THEME := portrait_hdpi
+TARGET_RECOVERY_PIXEL_FORMAT := "ABGR_8888"
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel/brightness"
+TW_MAX_BRIGHTNESS := 255
+TW_HAS_DOWNLOAD_MODE := true
+TW_DEFAULT_BRIGHTNESS := 150
+TW_SKIP_COMPATIBILITY_CHECK := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/vendor/etc/recovery.fstab
+TW_INCLUDE_LIBRESETPROP := true
+TW_INCLUDE_RESETPROP := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/kernel/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
+TW_NO_REBOOT_BOOTLOADER := true
+TW_HAS_DOWNLOAD_MODE := true
+TW_INCLUDE_NTFS_3G := true
+TW_USE_NEW_MINADBD := true
+TW_NO_LEGACY_PROPS := true
+TW_USE_TOOLBOX := true
+TW_INTERNAL_STORAGE_PATH := "/data/media/0"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/sdcard1"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "sdcard1"
+RECOVERY_SDCARD_ON_DATA := true

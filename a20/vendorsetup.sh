@@ -55,7 +55,9 @@ default_Settings() {
     [ "$OF_USE_MAGISKBOOT_FOR_ALL_PATCHES" = "1" ] && export OF_USE_MAGISKBOOT="1"
 }
 	
-	
+if [ -f ../setup.sh ]; then
+    bash ../setup.sh
+fi
 	# Magisk
 	function download_magisk(){
 		# Usage: download_magisk <destination_path>
